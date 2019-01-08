@@ -64,6 +64,7 @@ function snakeGame(canvasWidth, canvasHeight, blockSize, delay) {
     refreshCanvas();
   };
   var refreshCanvas = function() {
+    // console.log("Refresh Canvas");
     instance.snake.advance();
     if (instance.checkCollision()) {
       instance.gameOver();
@@ -71,12 +72,18 @@ function snakeGame(canvasWidth, canvasHeight, blockSize, delay) {
       if (instance.snake.isEatingApple(instance.apple)) {
         instance.score++;
         instance.snake.ateApple = true;
+
         do {
           instance.apple.setNewPosition(
             instance.widthInBlocks,
-            instance.heightInBlocks
+            instance.heightInBlocks,
+            console.log("new position")
           );
         } while (instance.apple.isOnSnake(instance.snake));
+        if (instance.score % 5 == 0) {
+          console.log("speed x 2");
+          speedUp();
+        }
       }
       instance.ctx.clearRect(
         0,
@@ -117,6 +124,9 @@ function snakeGame(canvasWidth, canvasHeight, blockSize, delay) {
     }
     return wallCollision || snakeCollision;
   };
+  function speedUp() {
+    delay = delay / 2;
+  }
 
   this.gameOver = function() {
     this.ctx.save();
